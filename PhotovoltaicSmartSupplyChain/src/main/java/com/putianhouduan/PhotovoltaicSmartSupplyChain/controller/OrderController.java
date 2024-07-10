@@ -1,6 +1,6 @@
-package com.putianhouduan.PhotovoltaicSmartSupplyChain.Controller;
+package com.putianhouduan.PhotovoltaicSmartSupplyChain.controller;
 
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.Service.OrderService;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.Order;
 import io.swagger.annotations.Api;

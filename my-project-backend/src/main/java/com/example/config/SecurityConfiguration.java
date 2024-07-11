@@ -1,8 +1,10 @@
 package com.example.config;
 
 import com.example.entity.RestBean;
+import com.example.entity.dto.Account;
 import com.example.entity.vo.response.AuthorzeVo;
 import com.example.filter.JwtAuthorizeFilter;
+import com.example.service.AccountService;
 import com.example.utils.Jwtutil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +38,10 @@ public class SecurityConfiguration {
 
         @Resource
         JwtAuthorizeFilter jwtAuthorizeFilter;
+
+
+        @Resource
+        AccountService accountService;
 
 
         @Bean
@@ -83,12 +89,13 @@ public class SecurityConfiguration {
                                             Authentication authentication) throws IOException{
                 response.setContentType("application/json;charset=utf-8");
                 User user = (User) authentication.getPrincipal();
-                String token=jwtutil.creatJwt(user,1,"小林");
+                Account account=accountService.findAccountByNameOrEmail(user.getUsername());
+                String token=jwtutil.creatJwt(user,account.getId(),account.getUsername());
                 AuthorzeVo authorzeVo=new AuthorzeVo();
                 authorzeVo.setExpire(jwtutil.expireTime());
                 authorzeVo.setToken(token);
-                authorzeVo.setUsername("小林");
-                authorzeVo.setRole("");
+                authorzeVo.setUsername(account.getUsername());
+                authorzeVo.setRole(account.getRole());
                 response.getWriter().write(RestBean.success(authorzeVo).asJsonString());
         }
         public void onAuthenticationFailure(HttpServletRequest request,

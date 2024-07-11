@@ -5,10 +5,8 @@ import com.example.entity.vo.response.AuthorzeVo;
 import com.example.filter.JwtAuthorizeFilter;
 import com.example.utils.Jwtutil;
 import jakarta.annotation.Resource;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -101,7 +99,7 @@ public class SecurityConfiguration {
         }
         public void onLogoutSuccess(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    Authentication authentication) throws IOException, ServletException {
+                                    Authentication authentication) throws IOException {
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter writer=response.getWriter();
                 String authorization=request.getHeader("Authorization");

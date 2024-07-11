@@ -2,6 +2,7 @@ package com.example.config;
 
 import com.example.entity.RestBean;
 import com.example.entity.vo.response.AuthorzeVo;
+import com.example.filter.JwtAuthorizeFilter;
 import com.example.utils.Jwtutil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletException;
@@ -10,13 +11,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
+
 import org.springframework.security.web.SecurityFilterChain;
+
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
 
@@ -27,8 +32,11 @@ import java.io.IOException;
 @Configuration
 public class SecurityConfiguration {
 
-        @Autowired
+        @Resource
         Jwtutil jwtutil;
+
+        @Resource
+        JwtAuthorizeFilter jwtAuthorizeFilter;
 
 
         @Bean
@@ -47,15 +55,33 @@ public class SecurityConfiguration {
                                 .logoutUrl("/api/auth/logout")
                                 .logoutSuccessHandler(this::onLogoutSuccess)
                         )
+                        .exceptionHandling(conf->conf
+                                .authenticationEntryPoint(this::onUnauthorized)
+                                .accessDeniedHandler(this::onAccessDeny)
+                        )
                         .csrf(AbstractHttpConfigurer::disable)
                         .sessionManagement(conf->conf
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+                        .addFilterBefore(jwtAuthorizeFilter, UsernamePasswordAuthenticationFilter.class)
                         .build();
+        }
+
+        private void onAccessDeny(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  AccessDeniedException accessDeniedException) throws IOException {
+                response.setContentType("application/json;charset=utf-8");
+                response.getWriter().write(RestBean.forbidden(accessDeniedException.getMessage()).asJsonString());
+        }
+
+        public void onUnauthorized(HttpServletRequest request,
+                                   HttpServletResponse response,
+                                   AuthenticationException exception) throws IOException{
+                response.setContentType("application/json;charset=utf-8");
+                response.getWriter().write(RestBean.unauthorized(exception.getMessage()).asJsonString());
         }
         public void onAuthenticationSuccess(HttpServletRequest request,
                                             HttpServletResponse response,
-                                            Authentication authentication) throws IOException, ServletException {
+                                            Authentication authentication) throws IOException{
                 response.setContentType("application/json;charset=utf-8");
                 User user = (User) authentication.getPrincipal();
                 String token=jwtutil.creatJwt(user,1,"小林");
@@ -68,9 +94,9 @@ public class SecurityConfiguration {
         }
         public void onAuthenticationFailure(HttpServletRequest request,
                                             HttpServletResponse response,
-                                            AuthenticationException exception) throws IOException, ServletException {
+                                            AuthenticationException exception) throws IOException {
                 response.setContentType("application/json;charset=utf-8");
-                response.getWriter().write(RestBean.failure(401,exception.getMessage()).asJsonString());
+                response.getWriter().write(RestBean.unauthorized(exception.getMessage()).asJsonString());
         }
         public void onLogoutSuccess(HttpServletRequest request,
                                     HttpServletResponse response,

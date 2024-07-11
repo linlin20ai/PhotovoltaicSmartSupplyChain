@@ -91,11 +91,10 @@ public class SecurityConfiguration {
                 User user = (User) authentication.getPrincipal();
                 Account account=accountService.findAccountByNameOrEmail(user.getUsername());
                 String token=jwtutil.creatJwt(user,account.getId(),account.getUsername());
-                AuthorzeVo authorzeVo=new AuthorzeVo();
-                authorzeVo.setExpire(jwtutil.expireTime());
-                authorzeVo.setToken(token);
-                authorzeVo.setUsername(account.getUsername());
-                authorzeVo.setRole(account.getRole());
+                AuthorzeVo authorzeVo=account.asViewObject(AuthorzeVo.class,v->{
+                        v.setExpire(jwtutil.expireTime());
+                        v.setToken(token);
+                });
                 response.getWriter().write(RestBean.success(authorzeVo).asJsonString());
         }
         public void onAuthenticationFailure(HttpServletRequest request,

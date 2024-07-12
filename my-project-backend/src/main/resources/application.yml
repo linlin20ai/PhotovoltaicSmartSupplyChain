@@ -5,6 +5,8 @@ spring:
     jwt:
       key: sahfui1437545154;kdiofjadf
       expire: 7
+    filter:
+      order: -100
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root

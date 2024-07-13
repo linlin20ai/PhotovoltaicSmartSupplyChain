@@ -1,4 +1,13 @@
 spring:
+  mail:
+    host: smtp.163.com
+    username: 15280260130@163.com
+    password: SVUINWZBORXRTLNC
+  rabbitmq:
+    addresses: localhost
+    username: guest
+    password: guest
+    virtual-host: /
   application:
    name: my-project-backend
   security:
@@ -12,3 +21,8 @@ spring:
     username: root
     password: 1234
     url: jdbc:mysql://localhost:3306/text
+  amqp:
+    deserialization:
+      trust:
+        all:
+          true

@@ -1,8 +1,9 @@
+<!--
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.putianhouduan.PhotovoltaicSmartSupplyChain.dao.WareHousesDao">
 
-    <!-- 通用查询映射结果 -->
+    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;
     <resultMap id="BaseResultMap" type="com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.WareHouses">
         <id column="warehouse_id" property="warehouseId" />
         <result column="name" property="name" />
@@ -12,7 +13,7 @@
         <result column="updated_at" property="updatedAt" />
     </resultMap>
 
-    <!-- 通用查询结果列 -->
+    &lt;!&ndash; 通用查询结果列 &ndash;&gt;
     <sql id="Base_Column_List">
         warehouse_id, name, location, description, created_at, updated_at
     </sql>
@@ -41,3 +42,4 @@
 
 
 </mapper>
+-->

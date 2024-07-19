@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.Const;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.FlowUtils;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.User;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request.ConfirmResetVO;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request.EmailRegisterVo;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request.EmailResetVo;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper.UserMapper;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.UserService;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -109,6 +111,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return "内部错误，请联系管理员";
     }
+
+    @Override
+    public String resetConfirm(ConfirmResetVO confirmResetVO) {
+        String email = confirmResetVO.getEmail();
+        String code = stringRedisTemplate.opsForValue().get(Const.VERIFY_EMAIL_DATA + email);
+        if(code == null){
+            return "请先填写邮件验证码！";
+        }
+        if(code.equals(confirmResetVO.getCode())){
+            return "验证码错误，请重新填写";
+        }
+        return null;
+    }
+
+    @Override
+    public String resetEmailAccountPassword(EmailResetVo emailResetVo) {
+        String email=emailResetVo.getEmail();
+        String verify=this.resetConfirm(new ConfirmResetVO(email,emailResetVo.getCode()));
+        if(verify != null){
+            return  verify;
+        }
+        String password=passwordEncoder.encode(emailResetVo.getPassword());
+        boolean update=this.update().eq("email",email).set("password",password).update();
+        if(update){
+            stringRedisTemplate.delete(Const.VERIFY_EMAIL_DATA + email);
+        }
+        return null;
+    }
+
 
     private boolean exciteAccountByEmail(String email){
         return this.baseMapper.exists(Wrappers.<User>query().eq("email",email));

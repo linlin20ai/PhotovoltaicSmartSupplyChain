@@ -5,6 +5,7 @@ import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.ResultCode;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.filter.JwtAuthorizeFilter;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.JwtUntil;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.AuthorzeVo;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -35,6 +36,10 @@ public class SecurityConfiguration {
 
     @Resource
     JwtUntil jwtUntil;
+
+
+    @Resource
+    UserService userService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -83,12 +88,13 @@ public class SecurityConfiguration {
                                         Authentication authentication) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         User user= (User) authentication.getPrincipal();
-        String token =jwtUntil.creatJwt(user,1,"xiaolin");
+        com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.User account=userService.findUserByNameOrEmail(user.getUsername());
+        String token =jwtUntil.creatJwt(user,account.getUserId(),account.getUsername());
         AuthorzeVo authorzeVo = new AuthorzeVo();
         authorzeVo.setExpire(jwtUntil.expireTime());
         authorzeVo.setToken(token);
-        authorzeVo.setName("xiaolin");
-        authorzeVo.setRole("");
+        authorzeVo.setName(account.getUsername());
+        authorzeVo.setRole(String.valueOf(account.getRole()));
         response.getWriter().write(CommonResult.success(authorzeVo).asJsonString());
     }
     public void onAuthenticationFailure(HttpServletRequest request,

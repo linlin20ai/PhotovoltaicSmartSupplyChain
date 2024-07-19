@@ -1,6 +1,9 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.dto;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,13 +22,13 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("warehouses")
 public class WareHouses implements Serializable {
-
-    private static final long serialVersionUID = 1L;
 
     /**
      * 仓库ID，主键
      */
+    @TableId(type = IdType.AUTO)
     private Integer warehouseId;
 
     /**

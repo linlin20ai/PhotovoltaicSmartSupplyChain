@@ -1,9 +1,11 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.service.impl;
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.Const;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.FlowUtils;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.User;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.EmailRegisterVo;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper.UserMapper;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.UserService;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -11,9 +13,11 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -33,6 +37,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Resource
     FlowUtils flowUtils;
+
+
+    @Resource
+    PasswordEncoder passwordEncoder;
 
 
 
@@ -74,6 +82,41 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                     .set(Const.VERIFY_EMAIL_DATA+email,String.valueOf(code),3, TimeUnit.MINUTES);
             return null;
         }
+    }
+
+    @Override
+    public String registerEmailAccount(EmailRegisterVo emailRegisterVo) {
+        String email=emailRegisterVo.getEmail();
+        String key=Const.VERIFY_EMAIL_DATA+email;
+        String code=stringRedisTemplate.opsForValue().get(key);
+        String username=emailRegisterVo.getUsername();
+        if(code == null){
+            return "请先获取验证码";
+        }
+        if(!code.equals(emailRegisterVo.getCode())){
+            return "验证码输入错误，请重新输入";
+        }
+        if(this.exciteAccountByEmail(email)){
+            return "该邮箱已经被注册过了";
+        }
+        if(this.exciteAccountByUsername(username)){
+            return "该用户名已经被占用,请更换一个或者联系平台管理员";
+        }
+        String password=passwordEncoder.encode(emailRegisterVo.getPassword());
+        User account=new User(null,null,username,password,1,1,email);
+        if (this.save(account)) {
+            stringRedisTemplate.delete(key);
+            return null;
+        }
+        return "内部错误，请联系管理员";
+    }
+
+    private boolean exciteAccountByEmail(String email){
+        return this.baseMapper.exists(Wrappers.<User>query().eq("email",email));
+    }
+
+    private boolean exciteAccountByUsername(String username){
+        return this.baseMapper.exists(Wrappers.<User>query().eq("username",username));
     }
 
 

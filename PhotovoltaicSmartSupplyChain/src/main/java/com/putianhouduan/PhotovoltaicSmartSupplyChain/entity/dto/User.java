@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 /**
  * @author 林圣涛
  */
@@ -27,4 +29,6 @@ public class User {
     Integer role;
     Integer enabled;
     String email;
+
+
 }

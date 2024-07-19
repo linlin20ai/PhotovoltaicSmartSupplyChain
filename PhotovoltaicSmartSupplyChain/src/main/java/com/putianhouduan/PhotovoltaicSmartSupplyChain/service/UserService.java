@@ -8,4 +8,6 @@ import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.User;
  */
 public interface UserService extends IService<User> {
     User findUserByNameOrEmail(String text);
+
+    String registerEmailVerifyCode(String type,String email,String ip);
 }

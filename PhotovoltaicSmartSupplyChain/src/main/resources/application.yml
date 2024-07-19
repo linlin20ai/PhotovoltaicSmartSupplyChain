@@ -26,6 +26,15 @@ spring:
     jwt:
       key: sahfui1437545154;kdiofjadf
       expire: 7
+  mail:
+    host: smtp.163.com
+    username: 15280260130@163.com
+    password: SVUINWZBORXRTLNC
+  rabbitmq:
+    addresses: localhost
+    username: guest
+    password: guest
+    virtual-host: /
 
 server:
   port: 8080

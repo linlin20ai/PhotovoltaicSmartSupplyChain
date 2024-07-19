@@ -1,9 +1,11 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.common.config;
 
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.filter.JwtAuthorizeFilter;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.JwtUntil;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.AuthorzeVo;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -11,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +28,9 @@ import java.io.IOException;
  */
 @Component
 public class SecurityConfiguration {
+
+    @Resource
+    JwtAuthorizeFilter jwtAuthorizeFilter;
 
     @Resource
     JwtUntil jwtUntil;
@@ -45,10 +51,29 @@ public class SecurityConfiguration {
                         .logoutUrl("/api/auth/logout")
                         .logoutSuccessHandler(this::onLogoutSuccess)
                 )
+                .exceptionHandling(conf->conf
+                        .authenticationEntryPoint(this::onUnauthorized)
+                        .accessDeniedHandler(this::onAccessDeny)
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(conf -> conf
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthorizeFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
+    }
+
+    private void onAccessDeny(HttpServletRequest request,
+                              HttpServletResponse response,
+                              AccessDeniedException accessDeniedException) throws IOException {
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(CommonResult.forbidden(accessDeniedException.getMessage()).asJsonString());
+    }
+
+    public void onUnauthorized(HttpServletRequest request,
+                               HttpServletResponse response,
+                               AuthenticationException exception) throws IOException{
+        response.setContentType("application/json;charset=utf-8");
+        response.getWriter().write(CommonResult.unauthorized(exception.getMessage()).asJsonString());
     }
 
 

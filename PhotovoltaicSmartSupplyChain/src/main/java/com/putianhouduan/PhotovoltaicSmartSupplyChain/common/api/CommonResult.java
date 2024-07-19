@@ -137,4 +137,16 @@ public class CommonResult<T> {
     public String asJsonString(){
         return JSONObject.toJSONString(this, JSONWriter.Feature.WriteNulls);
     }
+
+    public static <T> CommonResult<T> unauthorized(String message){
+        return failure(401,message);
+    }
+
+    private static <T> CommonResult<T> failure(int code, String message) {
+        return (CommonResult<T>) new CommonResult<>(code,null,message);
+    }
+
+    public static <T> CommonResult<T> forbidden(String message){
+        return failure(403,message);
+    }
 }

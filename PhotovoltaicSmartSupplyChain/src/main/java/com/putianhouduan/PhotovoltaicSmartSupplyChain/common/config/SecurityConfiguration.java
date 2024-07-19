@@ -1,6 +1,7 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.common.config;
 
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.ResultCode;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.filter.JwtAuthorizeFilter;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.JwtUntil;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.AuthorzeVo;
@@ -18,10 +19,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * @author 林圣涛
@@ -92,15 +93,22 @@ public class SecurityConfiguration {
     }
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
+                                        AuthenticationException exception) throws IOException {
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(CommonResult.failed(exception.getMessage()).asJsonString());
     }
 
     public void onLogoutSuccess(HttpServletRequest request,
                                 HttpServletResponse response,
-                                Authentication authentication) throws IOException, ServletException {
-
+                                Authentication authentication) throws IOException{
+        response.setContentType("application/json;charset=utf-8");
+        PrintWriter writer=response.getWriter();
+        String authorization=request.getHeader("Authorization");
+        if(jwtUntil.invalidateJwt(authorization)){
+            writer.write(CommonResult.success(ResultCode.SUCCESS).asJsonString());
+        }else{
+            writer.write(CommonResult.failed(ResultCode.FAILED,"退出登录失败").asJsonString());
+        }
     }
 
 }

@@ -1,4 +1,4 @@
-package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo;
+package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -6,9 +6,13 @@ import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 
+/**
+ * @author 林圣涛
+ */
 @Data
 public class EmailRegisterVo {
     @Email
+    @Length(min=4)
     String email;
     @Length(max=6,min=6)
     String code;

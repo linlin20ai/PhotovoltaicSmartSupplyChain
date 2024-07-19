@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.Const;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.util.FlowUtils;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.User;
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.EmailRegisterVo;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request.EmailRegisterVo;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper.UserMapper;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.UserService;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -17,7 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;

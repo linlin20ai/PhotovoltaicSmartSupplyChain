@@ -94,7 +94,7 @@ public class SecurityConfiguration {
         authorzeVo.setExpire(jwtUntil.expireTime());
         authorzeVo.setToken(token);
         authorzeVo.setName(account.getUsername());
-        authorzeVo.setRole(String.valueOf(account.getRole()));
+        authorzeVo.setRole(account.getRole().toString());
         response.getWriter().write(CommonResult.success(authorzeVo).asJsonString());
     }
     public void onAuthenticationFailure(HttpServletRequest request,

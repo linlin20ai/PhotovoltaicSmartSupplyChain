@@ -1,7 +1,7 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.Order;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

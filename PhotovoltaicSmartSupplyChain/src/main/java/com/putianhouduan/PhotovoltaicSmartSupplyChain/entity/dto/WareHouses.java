@@ -1,4 +1,4 @@
-package com.putianhouduan.PhotovoltaicSmartSupplyChain.dto;
+package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;

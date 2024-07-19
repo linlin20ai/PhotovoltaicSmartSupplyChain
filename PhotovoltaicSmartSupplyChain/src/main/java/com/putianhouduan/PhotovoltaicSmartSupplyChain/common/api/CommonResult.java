@@ -1,5 +1,8 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api;
 
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSONWriter;
+
 /**
  * 通用返回结果封装类
  * Created by macro on 2019/4/19.
@@ -129,5 +132,9 @@ public class CommonResult<T> {
 
     public void setData(T data) {
         this.data = data;
+    }
+
+    public String asJsonString(){
+        return JSONObject.toJSONString(this, JSONWriter.Feature.WriteNulls);
     }
 }

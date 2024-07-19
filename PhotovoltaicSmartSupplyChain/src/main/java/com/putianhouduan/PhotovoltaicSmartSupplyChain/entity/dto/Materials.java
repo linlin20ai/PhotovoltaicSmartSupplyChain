@@ -1,4 +1,4 @@
-package com.putianhouduan.PhotovoltaicSmartSupplyChain.dto;
+package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,39 +20,39 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Inventory implements Serializable {
+public class Materials implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 库存ID，主键
-     */
-    private Integer inventoryId;
-
-    /**
-     * 仓库ID
-     */
-    private Integer warehouseId;
-
-    /**
-     * 物料ID
+     * 材料ID，主键
      */
     private Integer materialId;
 
     /**
-     * 物料数量
+     * 材料名称
      */
-    private Integer quantity;
+    private String name;
 
     /**
-     * 最后更新时间
+     * 材料描述
      */
-    private Date lastUpdated;
+    private String description;
+
+    /**
+     * 材料单位
+     */
+    private String unit;
 
     /**
      * 创建时间
      */
     private Date createdAt;
+
+    /**
+     * 最后更新时间
+     */
+    private Date updatedAt;
 
 
 }

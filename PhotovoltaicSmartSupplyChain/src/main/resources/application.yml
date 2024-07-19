@@ -22,6 +22,10 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  security:
+    jwt:
+      key: sahfui1437545154;kdiofjadf
+      expire: 7
 
 server:
   port: 8080

@@ -1,7 +1,7 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.Order;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
 
 /**
  * @author 林圣涛

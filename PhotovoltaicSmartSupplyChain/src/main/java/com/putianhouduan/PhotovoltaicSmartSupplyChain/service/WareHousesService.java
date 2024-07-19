@@ -2,7 +2,7 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.WareHouses;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.WareHouses;
 
 /**
  * @Author: adlx

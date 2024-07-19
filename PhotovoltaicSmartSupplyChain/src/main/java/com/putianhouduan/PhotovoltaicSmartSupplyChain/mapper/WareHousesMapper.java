@@ -1,11 +1,8 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.WareHouses;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.WareHouses;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 /**
  * @Author: adlx

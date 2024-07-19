@@ -2,7 +2,7 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.controller;
 
 
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
-import com.putianhouduan.PhotovoltaicSmartSupplyChain.dto.Order;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderService;
 import io.swagger.annotations.Api;
 

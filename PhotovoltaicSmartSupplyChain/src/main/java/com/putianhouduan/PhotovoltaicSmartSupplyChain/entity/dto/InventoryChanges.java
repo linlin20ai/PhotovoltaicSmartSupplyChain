@@ -1,4 +1,4 @@
-package com.putianhouduan.PhotovoltaicSmartSupplyChain.dto;
+package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

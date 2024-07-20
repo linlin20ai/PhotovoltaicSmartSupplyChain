@@ -1,8 +1,7 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -10,8 +9,9 @@ import java.util.Date;
  * @author 林圣涛
  * 商家（公司）信息参数
  */
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Merchants {
     @ApiModelProperty(value = "商家ID")
     private Integer id;

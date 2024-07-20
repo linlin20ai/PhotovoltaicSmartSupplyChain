@@ -1,7 +1,6 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -9,8 +8,9 @@ import java.util.Date;
  * @author 林圣涛
  *申请交易订单表
  */
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class preOrder {
     private int preOrderId;
     private int sellerId;

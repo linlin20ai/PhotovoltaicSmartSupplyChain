@@ -5,9 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
@@ -15,9 +13,9 @@ import java.util.Date;
  * @author 林圣涛
  * 交易订单详细信息
  */
-@Getter
-@Setter
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("orders")
 public class Order {
     @ApiModelProperty(value = "订单ID")

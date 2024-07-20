@@ -36,12 +36,9 @@ public class OrderController {
     @RequestMapping(value = "/id",method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<Order> getAcceptedOrders(int id){
-        Order byId = orderService.getById(id);
-        if(byId != null){
-            return CommonResult.success(byId);
-        }else {
-            return CommonResult.failed("请仔细检查id或者联系管理员");
-        }
+        return Optional.ofNullable(orderService.getById(id))
+                .map(CommonResult::success)
+                .orElseGet(()->CommonResult.failed("请仔细检查您输入的id是否有误，或者请联系管理员"));
     }
 
     @ApiOperation("查询已接受订单")
@@ -51,6 +48,6 @@ public class OrderController {
         List<Order> list = orderService.list();
         List<Order> collect = new ArrayList<>(Optional.ofNullable(list)
                 .orElse(Collections.emptyList()));
-        return collect.isEmpty() ? CommonResult.failed("Failed to retrieve order list") : CommonResult.success(collect);
+        return collect.isEmpty() ? CommonResult.failed("系统出了点小问题，请联系管理员解决") : CommonResult.success(collect);
     }
 }

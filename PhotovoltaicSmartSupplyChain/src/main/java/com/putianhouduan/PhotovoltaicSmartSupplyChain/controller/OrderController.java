@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 
 import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,5 +50,16 @@ public class OrderController {
         List<Order> collect = new ArrayList<>(Optional.ofNullable(list)
                 .orElse(Collections.emptyList()));
         return collect.isEmpty() ? CommonResult.failed("系统出了点小问题，请联系管理员解决") : CommonResult.success(collect);
+    }
+
+    @ApiOperation("创建完成订单")
+    @RequestMapping(value = "/createOrder",method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<Order> creatOrder( @RequestBody Order order){
+        boolean save = orderService.save(order);
+        if(save){
+            return CommonResult.success(order,"订单完成");
+        }
+        return CommonResult.success(null,"订单完成有误请及时联系管理员");
     }
 }

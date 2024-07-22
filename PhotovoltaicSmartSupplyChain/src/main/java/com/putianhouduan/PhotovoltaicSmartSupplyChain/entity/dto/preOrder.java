@@ -1,5 +1,6 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("pre_orders")
 public class preOrder {
     private int preOrderId;
     private int sellerId;

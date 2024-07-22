@@ -10,7 +10,5 @@ import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.WareHouses;
  * @DateTime: 2024/7/10 20:42
  **/
 public interface WareHousesService extends IService<WareHouses> {
-    /*List<WareHouses> selectAll();
 
-    WareHouses selectBywareId(Long id);*/
 }

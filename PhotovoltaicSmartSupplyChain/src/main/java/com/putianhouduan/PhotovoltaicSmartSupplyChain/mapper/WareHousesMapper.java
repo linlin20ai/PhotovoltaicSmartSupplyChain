@@ -12,7 +12,4 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface WareHousesMapper  extends BaseMapper<WareHouses> {
-   /* List<WareHouses> selectAll();
-
-    WareHouses selectBywareId(@Param("id") Long id);*/
 }

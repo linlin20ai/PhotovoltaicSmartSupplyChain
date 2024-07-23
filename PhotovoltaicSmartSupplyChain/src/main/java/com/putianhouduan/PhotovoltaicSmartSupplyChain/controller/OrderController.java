@@ -3,18 +3,19 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.controller;
 
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderQueryService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderService;
 import io.swagger.annotations.Api;
 
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,9 @@ public class OrderController {
 
     @Resource
     OrderService orderService;
+
+    @Resource
+    OrderQueryService orderQueryService;
 
 
     @ApiOperation("根据id查询已接受订单")
@@ -61,5 +65,14 @@ public class OrderController {
             return CommonResult.success(order,"订单完成");
         }
         return CommonResult.success(null,"订单完成有误请及时联系管理员");
+    }
+
+
+    @ApiOperation("查询总交易量")
+    @RequestMapping(value = "/listorder",method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<Long>> getMonthlyOrders() {
+        List<Long> monthlyOrders = orderQueryService.getMonthlyOrders();
+        return CommonResult.success(monthlyOrders);
     }
 }

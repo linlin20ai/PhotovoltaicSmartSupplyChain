@@ -1,5 +1,6 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.service.impl;
 
+
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper.OrderMapper;
@@ -12,4 +13,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+
 }

@@ -2,7 +2,9 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api;
 
 /**
  * API返回码封装类
- * Created by macro on 2019/4/19.
+ *
+ * @author macro
+ * @date 2019/4/19
  */
 public enum ResultCode implements IErrorCode {
     SUCCESS(200, "操作成功"),

@@ -23,7 +23,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return this.userInfoDto().getMerchantId();
     }
 
-    private UserInfoDto userInfoDto(){
+    public UserInfoDto userInfoDto(){
         //获取当前认证消息
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();

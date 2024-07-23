@@ -12,7 +12,6 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("pre_orders")
 public class preOrder {
     private int preOrderId;
     private int sellerId;

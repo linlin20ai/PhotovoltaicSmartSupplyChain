@@ -51,4 +51,10 @@ public class OrderQueryServiceImpl implements OrderQueryService {
 
         return monthlyOrders;
     }
+
+    @Override
+    public Long getSum() {
+        QueryWrapper<Order> queryWrapper = new QueryWrapper<>();
+        return null;
+    }
 }

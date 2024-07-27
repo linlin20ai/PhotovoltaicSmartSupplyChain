@@ -3,23 +3,18 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.controller;
 
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.response.OrderSumVo;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderQueryService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderService;
 import io.swagger.annotations.Api;
 
 
 import io.swagger.annotations.ApiOperation;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /**
@@ -74,5 +69,25 @@ public class OrderController {
     public CommonResult<List<Long>> getMonthlyOrders() {
         List<Long> monthlyOrders = orderQueryService.getMonthlyOrders();
         return CommonResult.success(monthlyOrders);
+    }
+
+
+
+    @RequestMapping(value = "/sum",method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<OrderSumVo>  getSum(){
+        List<Order> list = orderService.list();
+        OrderSumVo orderSumVo = new OrderSumVo();
+
+        // 使用流处理计算总和
+        Double totalSum = list.stream()
+                .map(Order::getTotalAmount)
+                .filter(Objects::nonNull)
+                // 过滤空值
+                .reduce(0.0, Double::sum);
+
+        orderSumVo.setSum(totalSum);
+
+        return CommonResult.success(orderSumVo);
     }
 }

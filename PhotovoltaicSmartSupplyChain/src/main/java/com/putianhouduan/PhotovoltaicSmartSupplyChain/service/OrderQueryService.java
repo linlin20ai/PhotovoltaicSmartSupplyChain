@@ -10,4 +10,6 @@ import java.util.List;
 public interface OrderQueryService {
 
     List<Long> getMonthlyOrders();
+
+    Long getSum();
 }

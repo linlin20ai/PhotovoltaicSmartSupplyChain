@@ -2,8 +2,11 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.controller;
 
 
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Merchants;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.response.OrderSumVo;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.response.OrderVo;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.MerchantsService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderQueryService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderService;
 import io.swagger.annotations.Api;
@@ -31,6 +34,9 @@ public class OrderController {
     @Resource
     OrderQueryService orderQueryService;
 
+    @Resource
+    MerchantsService merchantsService;
+
 
     @ApiOperation("根据id查询已接受订单")
     @RequestMapping(value = "/id",method = RequestMethod.GET)
@@ -44,11 +50,18 @@ public class OrderController {
     @ApiOperation("查询已接受订单")
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult<List<Order>> getOrderList(){
+    public CommonResult<List<OrderVo>> getOrderList(){
         List<Order> list = orderService.list();
         List<Order> collect = new ArrayList<>(Optional.ofNullable(list)
                 .orElse(Collections.emptyList()));
-        return collect.isEmpty() ? CommonResult.failed("系统出了点小问题，请联系管理员解决") : CommonResult.success(collect);
+        List<OrderVo> res = new ArrayList<>();
+        collect.forEach(order -> {
+            Merchants buyerMerchant = merchantsService.getById(order.getBuyerId());
+            Merchants sellMerchant = merchantsService.getById(order.getSellerId());
+            OrderVo orderVo = new OrderVo(order.getOrderId(),buyerMerchant.getName(),sellMerchant.getName(),order.getItem(),order.getQuantity(),order.getPricePerUnit(),order.getTotalAmount(),order.getTransactionDate(),order.getLocation(),order.getStatus(),order.getCreatedAt(),order.getUpdateAt());
+            res.add(orderVo);
+        });
+        return collect.isEmpty() ? CommonResult.failed("系统出了点小问题，请联系管理员解决") : CommonResult.success(res);
     }
 
     @ApiOperation("创建完成订单")

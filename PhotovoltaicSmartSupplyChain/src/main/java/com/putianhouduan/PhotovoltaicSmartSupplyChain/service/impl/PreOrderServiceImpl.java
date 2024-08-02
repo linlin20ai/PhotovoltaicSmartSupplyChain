@@ -2,8 +2,10 @@ package com.putianhouduan.PhotovoltaicSmartSupplyChain.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.PreOrder;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.mapper.PreOrderMapper;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.OrderService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.PreOrderService;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ public class PreOrderServiceImpl extends ServiceImpl<PreOrderMapper,PreOrder> im
 
     @Resource
     PreOrderMapper preOrderMapper;
+
+    @Resource
+    OrderService orderService;
     @Override
     public CommonResult<String> createPreOrder(PreOrder preOrder) {
         preOrder.setCreatedAt(new Date());
@@ -30,4 +35,8 @@ public class PreOrderServiceImpl extends ServiceImpl<PreOrderMapper,PreOrder> im
             return CommonResult.failed("交易订单申请失败，请稍后重试或者联系管理员");
         }
     }
+
+
+
+
 }

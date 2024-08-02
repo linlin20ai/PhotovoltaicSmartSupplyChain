@@ -10,4 +10,7 @@ import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.PreOrder;
 public interface PreOrderService extends IService<PreOrder> {
 
      CommonResult<String> createPreOrder(PreOrder preOrder);
+
+
+
 }

@@ -58,14 +58,17 @@ public class OrderController {
         collect.forEach(order -> {
             Merchants buyerMerchant = merchantsService.getById(order.getBuyerId());
             Merchants sellMerchant = merchantsService.getById(order.getSellerId());
-            OrderVo orderVo = new OrderVo(order.getOrderId(),buyerMerchant.getName(),sellMerchant.getName(),order.getItem(),order.getQuantity(),order.getPricePerUnit(),order.getTotalAmount(),order.getTransactionDate(),order.getLocation(),order.getStatus(),order.getCreatedAt(),order.getUpdateAt());
+            OrderVo orderVo = new OrderVo(order.getOrderId(),buyerMerchant.getName(),
+                    sellMerchant.getName(),order.getItem(),order.getQuantity(),order.getPricePerUnit(),
+                    order.getTotalAmount(),order.getTransactionDate(),order.getLocation(),order.getStatus(),
+                    order.getCreatedAt(),order.getUpdateAt());
             res.add(orderVo);
         });
         return collect.isEmpty() ? CommonResult.failed("系统出了点小问题，请联系管理员解决") : CommonResult.success(res);
     }
 
     @ApiOperation("创建完成订单")
-    @RequestMapping(value = "/createOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/cr eateOrder",method = RequestMethod.POST)
     @ResponseBody
     public CommonResult<Order> creatOrder( @RequestBody Order order){
         boolean save = orderService.save(order);

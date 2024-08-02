@@ -23,6 +23,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         return this.userInfoDto().getMerchantId();
     }
 
+    @Override
     public UserInfoDto userInfoDto(){
         //获取当前认证消息
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -37,6 +38,12 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoDto.setRole(account.getRole().toString());
         userInfoDto.setUsername(account.getUsername());
         userInfoDto.setEmail(account.getEmail());
+        userInfoDto.setUserId(account.getUserId());
         return userInfoDto;
+    }
+
+    @Override
+    public Integer getUserId() {
+        return this.userInfoDto().getUserId();
     }
 }

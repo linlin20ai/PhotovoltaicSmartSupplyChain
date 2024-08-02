@@ -10,4 +10,6 @@ public interface UserInfoService {
     Integer getMerchantId();
 
      UserInfoDto userInfoDto();
+
+     Integer getUserId();
 }

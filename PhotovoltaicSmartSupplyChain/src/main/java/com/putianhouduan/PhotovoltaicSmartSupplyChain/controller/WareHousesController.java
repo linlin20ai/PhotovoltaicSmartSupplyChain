@@ -4,7 +4,10 @@ import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.UserInfoDto;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.WareHouses;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.WareHouseInventory;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.WarehouseInventoryChangeLog;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request.WarehouseInventoryChangeVo;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.UserInfoService;
+import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.WareHouseInventoryChangeLogService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.WareHouseInventoryService;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.service.WareHousesService;
 import io.swagger.annotations.Api;
@@ -41,6 +44,9 @@ public class WareHousesController {
     @Resource
     WareHouseInventoryService wareHouseInventoryService;
 
+    @Resource
+    WareHouseInventoryChangeLogService wareHouseInventoryChangeLogService;
+
     @ApiOperation("获取全部仓库信息")
     @RequestMapping(value = "/selectAll", method = RequestMethod.GET)
     @ResponseBody
@@ -66,5 +72,32 @@ public class WareHousesController {
         return Optional.ofNullable(wareHouseInventoryService.selectByMerchantId(userInfoService.getMerchantId()))
                 .map(CommonResult::success)
                 .orElseGet(()->CommonResult.failed("请仔细检查输入的id是否正确或者请立马联系管理员"));
+    }
+
+
+    //自定义仓库改变接口
+    @RequestMapping(value = "/selfChange",method = RequestMethod.POST)
+    @ResponseBody
+    public CommonResult<String> addWareHouse(@RequestBody WarehouseInventoryChangeVo warehouseInventoryChangeVo){
+        WarehouseInventoryChangeLog warehouseInventoryChangeLog = wareHouseInventoryChangeLogService.VoToDto(warehouseInventoryChangeVo);
+
+
+        Integer inventoryId = warehouseInventoryChangeVo.getInventoryId();
+        WareHouseInventory changWareHouseInventory = wareHouseInventoryService.getById(inventoryId);
+        Integer oldQuantity = changWareHouseInventory.getQuantity();
+        Integer changeQuantity = warehouseInventoryChangeVo.getChangeQuantity();
+        Integer newQuantity = oldQuantity+changeQuantity;
+        if(newQuantity < 0){
+            return CommonResult.failed("修改的数据有误");
+        }
+        changWareHouseInventory.setQuantity(newQuantity);
+
+        if(wareHouseInventoryService.changeQuantity(newQuantity,changWareHouseInventory)){
+            warehouseInventoryChangeLog.setNewQuantity(newQuantity);
+            wareHouseInventoryChangeLogService.save(warehouseInventoryChangeLog);
+            return CommonResult.success("数据修改完成");
+        }else {
+            return CommonResult.failed("有错误，请稍后重试");
+        }
     }
 }

@@ -12,4 +12,7 @@ public interface WareHouseInventoryService extends IService<WareHouseInventory> 
 
 
     List<WareHouseInventory> selectByMerchantId(Integer merchantId);
+
+    Boolean changeQuantity(Integer newQuantity , WareHouseInventory wareHouseInventory);
+
 }

@@ -1,5 +1,6 @@
 package com.putianhouduan.PhotovoltaicSmartSupplyChain.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.common.api.CommonResult;
 import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.dto.Order;
@@ -36,7 +37,12 @@ public class PreOrderServiceImpl extends ServiceImpl<PreOrderMapper,PreOrder> im
         }
     }
 
-
+    @Override
+    public void updateStatue(String statue ,Integer preId) {
+        UpdateWrapper<PreOrder> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.eq("pre_order_id",preId).set("status",statue);
+        preOrderMapper.update(null,updateWrapper);
+    }
 
 
 }

@@ -9,4 +9,6 @@ import com.putianhouduan.PhotovoltaicSmartSupplyChain.entity.vo.request.Warehous
  */
 public interface WareHouseInventoryChangeLogService extends IService<WarehouseInventoryChangeLog> {
     WarehouseInventoryChangeLog VoToDto(WarehouseInventoryChangeVo warehouseInventoryChangeVo);
+
+
 }

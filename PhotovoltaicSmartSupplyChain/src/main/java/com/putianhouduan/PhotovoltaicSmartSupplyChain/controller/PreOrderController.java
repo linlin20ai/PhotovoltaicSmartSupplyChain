@@ -105,7 +105,7 @@ public class PreOrderController {
                     && transactionsService.createPreOrderTransaction(preOrder,buyerId,balance,paySum)){
                 if(merchantBalancesService.subMerchantBalances(paySum,buyerId)
                         &&merchantBalancesService.addMerchantBalances(paySum,preOrder.getSellerId())){
-                    preOrder.setStatus("converted");
+                    preOrderService.updateStatue("converted",preOrderId);
                     return CommonResult.success("交易成功快去和卖家协商物流的处理吧！");
                 }
                 return CommonResult.failed("交易失败，稍后重试！");

@@ -12,5 +12,7 @@ public interface PreOrderService extends IService<PreOrder> {
      CommonResult<String> createPreOrder(PreOrder preOrder);
 
 
+     void updateStatue(String statue , Integer preId);
+
 
 }
